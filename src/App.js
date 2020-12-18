@@ -1,4 +1,11 @@
 import { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+} from 'react-router-dom';
 import { Box, Heading, Timeline } from '@primer/components';
 import './App.css';
 
@@ -9,7 +16,7 @@ const Question = (props) => {
   const { number, question } = props;
 
   return (
-    <Timeline.Item>
+    <Timeline.Item key={number}>
       <Timeline.Badge>{number}</Timeline.Badge>
       <Timeline.Body>{question}</Timeline.Body>
     </Timeline.Item>
@@ -22,8 +29,9 @@ const Question = (props) => {
 // cause a re-render of the Component.  Once the fetch completes, we'll have data
 // to display.
 const QuestionList = (props) => {
+  let params = useParams();
   const [listState, setListState] = useState({
-    round: props.round,
+    round: params.round,
     questions: null
   })
 
@@ -49,20 +57,34 @@ const QuestionList = (props) => {
   )
 };
 
+const RoundLink = (props) => {
+  let { round } = props;
+
+  return (
+    <li key={round}>
+      <Link to={"/round" + round}> Round {round}</Link>
+    </li>
+  );
+}
+
 function App() {
   fetch("/ping").then(res => res.text()).then(res => console.log(res));
+  const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
-    <Box>
-      <QuestionList round={1} />
-      <QuestionList round={2} />
-      <QuestionList round={3} />
-      <QuestionList round={4} />
-      <QuestionList round={5} />
-      <QuestionList round={6} />
-      <QuestionList round={7} />
-      <QuestionList round={8} />
-      <QuestionList round={9} />
-    </Box>
+    <Router>
+      <Switch>
+        <Route path="/round:round">
+          <QuestionList />
+        </Route>
+        <Route exact path="/">
+          <nav>
+            <ul>
+              {rounds.map((round) => <RoundLink round={round} />)}
+            </ul>
+          </nav>
+        </Route>
+      </Switch>
+    </Router >
   );
 }
 
