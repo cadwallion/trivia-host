@@ -28,6 +28,7 @@ const QuestionList = (props) => {
   })
 
   useEffect(() => {
+    if (listState.questions) return;
     fetch("/round" + listState.round)
       .then(res => res.json())
       .then(res => setListState({ round: listState.round, questions: res.questions }))
