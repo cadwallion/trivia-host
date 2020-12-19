@@ -71,7 +71,7 @@ function App() {
   fetch("/ping").then(res => res.text()).then(res => console.log(res));
   const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
-    <div>
+    <Box as={Flex} mr={3}>
     <SideNav bordered maxWidth={360} aria-label="Main">
       <SideNav.Link href="/round1">
         <Text>Round 1</Text>
