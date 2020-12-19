@@ -6,7 +6,7 @@ import {
   Link,
   useParams,
 } from 'react-router-dom';
-import { Box, Heading, Timeline, SideNav, Text } from '@primer/components';
+import { Box, Flex, Heading, Timeline, SideNav, Text } from '@primer/components';
 import './App.css';
 
 // The Question contains how to display a single question from a QuestionList.
