@@ -6,7 +6,7 @@ import {
   Link,
   useParams,
 } from 'react-router-dom';
-import { Box, Heading, Timeline } from '@primer/components';
+import { Box, Heading, Timeline, SideNav, Text } from '@primer/components';
 import './App.css';
 
 // The Question contains how to display a single question from a QuestionList.
@@ -71,6 +71,36 @@ function App() {
   fetch("/ping").then(res => res.text()).then(res => console.log(res));
   const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
+    <div>
+    <SideNav bordered maxWidth={360} aria-label="Main">
+      <SideNav.Link href="/round1">
+        <Text>Round 1</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round2">
+        <Text>Round 2</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round3">
+        <Text>Round 3</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round4">
+        <Text>Round 4</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round5">
+        <Text>Round 5</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round6">
+        <Text>Round 6</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round7">
+        <Text>Round 7</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round8">
+        <Text>Round 8</Text>
+      </SideNav.Link>
+      <SideNav.Link href="/round9">
+        <Text>Round 9</Text>
+      </SideNav.Link>
+    </SideNav>
     <Router>
       <Switch>
         <Route path="/round:round">
@@ -85,6 +115,7 @@ function App() {
         </Route>
       </Switch>
     </Router >
+    </div>
   );
 }
 
