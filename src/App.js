@@ -12,7 +12,7 @@ import {
   Heading,
   Timeline,
   SideNav,
-  Text,
+  // Text,
 } from "@primer/components";
 import "./App.css";
 
@@ -52,7 +52,7 @@ const QuestionList = (props) => {
   }, [listState, setListState]);
 
   const { questions, round } = listState;
-  if (!questions) return <div class="loading">Loading...</div>;
+  if (!questions) return <div className="loading">Loading...</div>;
 
   return (
     <Box>
@@ -84,7 +84,9 @@ const SideNavLink = (props) => {
 
   return (
     <SideNav.Link href={"/round" + round}>
-      <Text>Round {round}</Text>
+      <Heading as="h5" fontSize={1}>
+        Round {round}
+      </Heading>
     </SideNav.Link>
   );
 };
@@ -95,10 +97,12 @@ function App() {
     .then((res) => console.log(res));
   const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
-    <Box as={Flex} mr={15}>
-      <SideNav bordered maxWidth={360} aria-label="Main" mr={30}>
+    <Box as={Flex} mr={15} bg={"blue.1"}>
+      <SideNav bg={"blue.3"} bordered maxWidth={360} aria-label="Main" mr={30}>
         <SideNav.Link href={"/"}>
-          <Text>Home</Text>
+          <Heading as="h5" fontSize={1}>
+            Home
+          </Heading>
         </SideNav.Link>
         {rounds.map((round) => (
           <SideNavLink round={round} />
