@@ -59,6 +59,8 @@ const QuestionList = (props) => {
       );
   }, [listState, setListState]);
 
+  // @TODO: Determine if this is a memoization issue or not.
+  // this looks nicer but if it's a bug then it needs squashing
   const { round, questions, currentQuestion } = listState;
   if (!questions) return <div className="loading">Loading...</div>;
 
@@ -76,17 +78,32 @@ const QuestionList = (props) => {
     );
   };
 
+  const changeQuestion = (direction) => {
+    let questionNumber = currentQuestion;
+    if (currentQuestion + direction < 1 || currentQuestion + direction > questions.length) return;
+    questionNumber += direction;
+    setListState({
+      round: round,
+      questions: questions,
+      currentQuestion: questionNumber
+    });
+  }
+
   return (
     <>
       <Box>
-        <Heading>Round {round}</Heading>
-        {showCurrentQuestions()}
-      </Box>
-      <Box className="NavButtons" ml={15}>
-        <ButtonGroup display="block" my={2}>
-          <QuestionButton type="Prev" />
-          <QuestionButton type="Next" />
-        </ButtonGroup>
+        <Box ml={1} width={400}>
+          <Heading>Round {round}</Heading>
+          <Box as="span">
+            <ButtonGroup display="block" my={2}>
+              <QuestionButton type="Prev" onClick={changeQuestion.bind(this, -1)} />
+              <QuestionButton type="Next" onClick={changeQuestion.bind(this, 1)} />
+            </ButtonGroup>
+          </Box>
+        </Box>
+        <Box>
+          {showCurrentQuestions()}
+        </Box>
       </Box>
     </>
   );
@@ -115,14 +132,10 @@ const SideNavLink = (props) => {
 };
 
 const QuestionButton = (props) => {
-  let { currentQuestion } = props;
-
   return (
     <Button
       type="button"
-      onClick={() => {
-        console.log(props.type + " / " + currentQuestion);
-      }}
+      onClick={props.onClick}
     >
       {props.type}
     </Button>
