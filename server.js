@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.get('/ping', (req, res) => res.send("PONG"));
-app.get('/round:id', (req, res) => {
+app.get("/ping", (req, res) => res.send("PONG"));
+app.get("/round:id", (req, res) => {
   const data = [
     {
       questions: [
@@ -16,21 +16,21 @@ app.get('/round:id', (req, res) => {
         "What is Question 7?",
         "What is Question 8?",
         "What is Question 9?",
-        "What is Question 10?"
-      ]
+        "What is Question 10?",
+      ],
     },
     {
       questions: [
         "What is Love?",
         "What is Baby Don't Hurt Me?",
         "What is No More?",
-        "Who will never give you up?"
-      ]
-    }
-  ]
+        "Who will never give you up?",
+      ],
+    },
+  ];
 
   let roundData = data[req.params.id];
   if (!roundData) roundData = data[0];
-  res.json(roundData)
-})
-app.listen(8080)
+  res.json(roundData);
+});
+app.listen(8080);

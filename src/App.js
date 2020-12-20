@@ -5,7 +5,6 @@ import {
   Route,
   Link,
   useParams,
-  useHistory,
 } from "react-router-dom";
 import {
   ButtonGroup,
@@ -15,7 +14,6 @@ import {
   Heading,
   Timeline,
   SideNav,
-  // Text,
 } from "@primer/components";
 import "./App.css";
 
@@ -26,10 +24,12 @@ const Question = (props) => {
   const { number, question } = props;
 
   return (
-    <Timeline.Item key={number}>
-      <Timeline.Badge>{number}</Timeline.Badge>
-      <Timeline.Body>{question}</Timeline.Body>
-    </Timeline.Item>
+    <>
+      <Timeline.Item key={number}>
+        <Timeline.Badge>{number}</Timeline.Badge>
+        <Timeline.Body>{question}</Timeline.Body>
+      </Timeline.Item>
+    </>
   );
 };
 
@@ -43,6 +43,7 @@ const QuestionList = (props) => {
   const [listState, setListState] = useState({
     round: params.round,
     questions: null,
+    currentQuestion: 1,
   });
 
   useEffect(() => {
@@ -50,25 +51,44 @@ const QuestionList = (props) => {
     fetch("/round" + listState.round)
       .then((res) => res.json())
       .then((res) =>
-        setListState({ round: listState.round, questions: res.questions })
+        setListState({
+          round: listState.round,
+          questions: res.questions,
+          currentQuestion: listState.currentQuestion,
+        })
       );
   }, [listState, setListState]);
 
-  const { questions, round } = listState;
+  const { round, questions, currentQuestion } = listState;
   if (!questions) return <div className="loading">Loading...</div>;
 
-  return (
-    <Box>
-      <Heading>Round {round}</Heading>
+  const showCurrentQuestions = () => {
+    let questionList = questions.slice(0, currentQuestion);
+    return (
       <Timeline>
-        {questions.map((question) => (
+        {questionList.map((question) => (
           <Question
-            number={questions.indexOf(question) + 1}
+            number={questionList.indexOf(question) + 1}
             question={question}
           />
         ))}
       </Timeline>
-    </Box>
+    );
+  };
+
+  return (
+    <>
+      <Box>
+        <Heading>Round {round}</Heading>
+        {showCurrentQuestions()}
+      </Box>
+      <Box className="NavButtons" ml={15}>
+        <ButtonGroup display="block" my={2}>
+          <QuestionButton type="Prev" />
+          <QuestionButton type="Next" />
+        </ButtonGroup>
+      </Box>
+    </>
   );
 };
 
@@ -94,11 +114,15 @@ const SideNavLink = (props) => {
   );
 };
 
-const NavButton = (props) => {
-  let { round } = props;
-  const { push } = useHistory();
+const QuestionButton = (props) => {
+  let { currentQuestion } = props;
   return (
-    <Button type="button" onClick={() => push("/round" + round)}>
+    <Button
+      type="button"
+      onClick={() => {
+        console.log(props.type + " / " + currentQuestion);
+      }}
+    >
       {props.type}
     </Button>
   );
@@ -136,12 +160,6 @@ function App() {
             </nav>
           </Route>
         </Switch>
-        <Box className="NavButtons" ml={15}>
-          <ButtonGroup display="block" my={2}>
-            <NavButton type="Prev" />
-            <NavButton type="Next" />
-          </ButtonGroup>
-        </Box>
       </Router>
     </Box>
   );
