@@ -116,6 +116,7 @@ const SideNavLink = (props) => {
 
 const QuestionButton = (props) => {
   let { currentQuestion } = props;
+
   return (
     <Button
       type="button"
