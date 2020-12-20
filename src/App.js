@@ -5,8 +5,11 @@ import {
   Route,
   Link,
   useParams,
+  useHistory,
 } from "react-router-dom";
 import {
+  ButtonGroup,
+  Button,
   Box,
   Flex,
   Heading,
@@ -91,6 +94,16 @@ const SideNavLink = (props) => {
   );
 };
 
+const NavButton = (props) => {
+  let { round } = props;
+  const { push } = useHistory();
+  return (
+    <Button type="button" onClick={() => push("/round" + round)}>
+      {props.type}
+    </Button>
+  );
+};
+
 function App() {
   fetch("/ping")
     .then((res) => res.text())
@@ -123,6 +136,12 @@ function App() {
             </nav>
           </Route>
         </Switch>
+        <Box className="NavButtons" ml={15}>
+          <ButtonGroup display="block" my={2}>
+            <NavButton type="Prev" />
+            <NavButton type="Next" />
+          </ButtonGroup>
+        </Box>
       </Router>
     </Box>
   );
