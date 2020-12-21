@@ -6,7 +6,14 @@ import {
   Link,
   useParams,
 } from 'react-router-dom';
-import { Box, Flex, Heading, Timeline, SideNav, Text } from '@primer/components';
+import {
+  Card,
+  Col,
+  Container,
+  ListGroup,
+  Nav,
+  Row
+} from "react-bootstrap";
 import './App.css';
 
 // The Question contains how to display a single question from a QuestionList.
@@ -16,10 +23,9 @@ const Question = (props) => {
   const { number, question } = props;
 
   return (
-    <Timeline.Item key={number}>
-      <Timeline.Badge>{number}</Timeline.Badge>
-      <Timeline.Body>{question}</Timeline.Body>
-    </Timeline.Item>
+    <ListGroup.Item key={number}>
+      {number}. {question}
+    </ListGroup.Item>
   );
 };
 
@@ -43,17 +49,17 @@ const QuestionList = (props) => {
   }, [listState, setListState]);
 
   const { questions, round } = listState;
-  if (!questions) return <div class="loading">Loading...</div>;
+  if (!questions) return <div className="loading">Loading...</div>;
 
   return (
-    <Box>
-      <Heading>Round {round}</Heading>
-      <Timeline>
+    <Card bg="light">
+      <Card.Header as="h5">Round {round}</Card.Header>
+      <ListGroup variant="flush">
         {
-          questions.map((question) => <Question number={questions.indexOf(question) + 1} question={question} />)
+          questions.map((question) => <Question key={questions.indexOf(question)} number={questions.indexOf(question) + 1} question={question} />)
         }
-      </Timeline>
-    </Box>
+      </ListGroup>
+    </Card>
   )
 };
 
@@ -62,7 +68,7 @@ const RoundLink = (props) => {
 
   return (
     <li key={round}>
-      <Link to={"/round" + round}> Round {round}</Link>
+      <Link to={"/round/" + round}> Round {round}</Link>
     </li>
   );
 }
@@ -71,51 +77,39 @@ function App() {
   fetch("/ping").then(res => res.text()).then(res => console.log(res));
   const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
-    <Box as={Flex} mr={3}>
-    <SideNav bordered maxWidth={360} aria-label="Main">
-      <SideNav.Link href="/round1">
-        <Text>Round 1</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round2">
-        <Text>Round 2</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round3">
-        <Text>Round 3</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round4">
-        <Text>Round 4</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round5">
-        <Text>Round 5</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round6">
-        <Text>Round 6</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round7">
-        <Text>Round 7</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round8">
-        <Text>Round 8</Text>
-      </SideNav.Link>
-      <SideNav.Link href="/round9">
-        <Text>Round 9</Text>
-      </SideNav.Link>
-    </SideNav>
     <Router>
-      <Switch>
-        <Route path="/round:round">
-          <QuestionList />
-        </Route>
-        <Route exact path="/">
-          <nav>
-            <ul>
-              {rounds.map((round) => <RoundLink round={round} />)}
-            </ul>
-          </nav>
-        </Route>
-      </Switch>
-    </Router >
-    </Box>
+      <Container>
+        <Row>
+          <Col xs={2}>
+            <Nav aria-label="Main">
+              <Nav.Link href="/round/1">Round 1</Nav.Link>
+              <Nav.Link href="/round/2">Round 2</Nav.Link>
+              <Nav.Link href="/round/3">Round 3</Nav.Link>
+              <Nav.Link href="/round/4">Round 4</Nav.Link>
+              <Nav.Link href="/round/5">Round 5</Nav.Link>
+              <Nav.Link href="/round/6">Round 6</Nav.Link>
+              <Nav.Link href="/round/7">Round 7</Nav.Link>
+              <Nav.Link href="/round/8">Round 8</Nav.Link>
+              <Nav.Link href="/round/9">Round 9</Nav.Link>
+            </Nav>
+          </Col>
+          <Col xs={10}>
+            <Switch>
+              <Route path="/round/:round">
+                <QuestionList />
+              </Route>
+              <Route exact path="/">
+                <nav>
+                  <ul>
+                    {rounds.map((round) => <RoundLink key={round} round={round} />)}
+                  </ul>
+                </nav>
+              </Route>
+            </Switch>
+          </Col>
+        </Row>
+      </Container>
+    </Router>
   );
 }
 
