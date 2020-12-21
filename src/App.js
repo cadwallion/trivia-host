@@ -5,7 +5,6 @@ import {
   Route,
   Link,
   useParams,
-  useHistory,
 } from "react-router-dom";
 import {
   ButtonGroup,
@@ -57,17 +56,37 @@ const QuestionList = (props) => {
   const { questions, round } = listState;
   if (!questions) return <div className="loading">Loading...</div>;
 
+  const NavButton = (props) => {
+    // round = Number(round);
+    let newRound = Number(round) + props.direction;
+    if (newRound < 1) newRound = 1;
+    if (newRound > 9) newRound = 9;
+    return (
+      <SideNav.Link href={"/round" + newRound}>
+        <Button type="button">{props.text}</Button>
+      </SideNav.Link>
+    );
+  };
+
   return (
     <Box>
-      <Heading>Round {round}</Heading>
-      <Timeline>
-        {questions.map((question) => (
-          <Question
-            number={questions.indexOf(question) + 1}
-            question={question}
-          />
-        ))}
-      </Timeline>
+      <Box className="NavButtons" ml={15}>
+        <ButtonGroup display="block" my={2}>
+          <NavButton text="Prev" direction={-1} />
+          <NavButton text="Next" direction={1} />
+        </ButtonGroup>
+      </Box>
+      <Box>
+        <Heading>Round {round}</Heading>
+        <Timeline>
+          {questions.map((question) => (
+            <Question
+              number={questions.indexOf(question) + 1}
+              question={question}
+            />
+          ))}
+        </Timeline>
+      </Box>
     </Box>
   );
 };
@@ -91,16 +110,6 @@ const SideNavLink = (props) => {
         Round {round}
       </Heading>
     </SideNav.Link>
-  );
-};
-
-const NavButton = (props) => {
-  let { round } = props;
-  const { push } = useHistory();
-  return (
-    <Button type="button" onClick={() => push("/round" + round)}>
-      {props.type}
-    </Button>
   );
 };
 
@@ -136,12 +145,6 @@ function App() {
             </nav>
           </Route>
         </Switch>
-        <Box className="NavButtons" ml={15}>
-          <ButtonGroup display="block" my={2}>
-            <NavButton type="Prev" />
-            <NavButton type="Next" />
-          </ButtonGroup>
-        </Box>
       </Router>
     </Box>
   );
