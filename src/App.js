@@ -1,20 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   useParams,
-} from 'react-router-dom';
-import {
-  Card,
-  Col,
-  Container,
-  ListGroup,
-  Nav,
-  Row
-} from "react-bootstrap";
-import './App.css';
+} from "react-router-dom";
+import { Card, Col, Container, ListGroup, Nav, Row } from "react-bootstrap";
+import "./App.css";
 
 // The Question contains how to display a single question from a QuestionList.
 // While not strictly necessary that this be split out, I find this cleans up
@@ -38,14 +30,16 @@ const QuestionList = (props) => {
   let params = useParams();
   const [listState, setListState] = useState({
     round: params.round,
-    questions: null
-  })
+    questions: null,
+  });
 
   useEffect(() => {
     if (listState.questions) return;
     fetch("/round" + listState.round)
-      .then(res => res.json())
-      .then(res => setListState({ round: listState.round, questions: res.questions }))
+      .then((res) => res.json())
+      .then((res) =>
+        setListState({ round: listState.round, questions: res.questions })
+      );
   }, [listState, setListState]);
 
   const { questions, round } = listState;
@@ -55,26 +49,38 @@ const QuestionList = (props) => {
     <Card bg="light">
       <Card.Header as="h5">Round {round}</Card.Header>
       <ListGroup variant="flush">
-        {
-          questions.map((question) => <Question key={questions.indexOf(question)} number={questions.indexOf(question) + 1} question={question} />)
-        }
+        {questions.map((question) => (
+          <Question
+            key={questions.indexOf(question)}
+            number={questions.indexOf(question) + 1}
+            question={question}
+          />
+        ))}
       </ListGroup>
     </Card>
-  )
+  );
 };
 
-const RoundLink = (props) => {
+// const RoundLink = (props) => {
+//   let { round } = props;
+
+//   return <Nav.Link href={"/round" + round}>Round {round}</Nav.Link>;
+// };
+
+const SideNavLink = (props) => {
   let { round } = props;
 
   return (
-    <li key={round}>
-      <Link to={"/round/" + round}> Round {round}</Link>
-    </li>
+    <ListGroup.Item variant="primary" as="li">
+      <Nav.Link href={"/round/" + round}>Round {round}</Nav.Link>
+    </ListGroup.Item>
   );
-}
+};
 
 function App() {
-  fetch("/ping").then(res => res.text()).then(res => console.log(res));
+  fetch("/ping")
+    .then((res) => res.text())
+    .then((res) => console.log(res));
   const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
     <Router>
@@ -82,15 +88,14 @@ function App() {
         <Row>
           <Col xs={2}>
             <Nav aria-label="Main">
-              <Nav.Link href="/round/1">Round 1</Nav.Link>
-              <Nav.Link href="/round/2">Round 2</Nav.Link>
-              <Nav.Link href="/round/3">Round 3</Nav.Link>
-              <Nav.Link href="/round/4">Round 4</Nav.Link>
-              <Nav.Link href="/round/5">Round 5</Nav.Link>
-              <Nav.Link href="/round/6">Round 6</Nav.Link>
-              <Nav.Link href="/round/7">Round 7</Nav.Link>
-              <Nav.Link href="/round/8">Round 8</Nav.Link>
-              <Nav.Link href="/round/9">Round 9</Nav.Link>
+              <ListGroup>
+                <ListGroup.Item variant="primary" as="li">
+                  <Nav.Link href="/">Home</Nav.Link>
+                </ListGroup.Item>
+                {rounds.map((round) => (
+                  <SideNavLink round={round} />
+                ))}
+              </ListGroup>
             </Nav>
           </Col>
           <Col xs={10}>
@@ -100,9 +105,7 @@ function App() {
               </Route>
               <Route exact path="/">
                 <nav>
-                  <ul>
-                    {rounds.map((round) => <RoundLink key={round} round={round} />)}
-                  </ul>
+                  <h1>HOME</h1>
                 </nav>
               </Route>
             </Switch>
