@@ -63,7 +63,14 @@ const QuestionList = (props) => {
 };
 
 const HomeInfo = (props) => {
-  return <h1>Put HOME info stuff here yo!</h1>;
+  return (
+    <Card style={{ width: "19rem" }}>
+      <Card.Body>
+        <Card.Title>There is no place like HOME</Card.Title>
+        <Card.Text>Put HOME info stuff here yo!</Card.Text>
+      </Card.Body>
+    </Card>
+  );
 };
 
 const RoundLink = (props) => {
