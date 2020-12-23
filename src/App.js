@@ -76,9 +76,11 @@ const HomeInfo = (props) => {
 const RoundLink = (props) => {
   const { round } = props;
   return (
-    <LinkContainer to={"/round/" + round}>
-      <Nav.Link as={Link}>Round {round}</Nav.Link>
-    </LinkContainer>
+    <ListGroup.Item variant="info" as="li" action>
+      <LinkContainer to={"/round/" + round}>
+        <Nav.Link as={Link}>Round {round}</Nav.Link>
+      </LinkContainer>
+    </ListGroup.Item>
   );
 };
 
@@ -90,12 +92,16 @@ function App() {
         <Row>
           <Col xs={2}>
             <Nav aria-label="Main">
-              <LinkContainer to="/">
-                <Nav.Link as={Link}>Home</Nav.Link>
-              </LinkContainer>
-              {rounds.map((round) => (
-                <RoundLink round={round} />
-              ))}
+              <ListGroup>
+                <ListGroup.Item variant="primary" as="li" action>
+                  <LinkContainer to="/">
+                    <Nav.Link as={Link}>Home</Nav.Link>
+                  </LinkContainer>
+                </ListGroup.Item>
+                {rounds.map((round) => (
+                  <RoundLink round={round} />
+                ))}
+              </ListGroup>
             </Nav>
           </Col>
           <Col xs={10}>
