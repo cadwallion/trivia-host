@@ -1,21 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
   Link,
   useParams,
-} from 'react-router-dom';
-import {
-  Card,
-  Col,
-  Container,
-  ListGroup,
-  Nav,
-  Row
-} from "react-bootstrap";
-import { LinkContainer } from 'react-router-bootstrap'
-import './App.css';
+} from "react-router-dom";
+import { Card, Col, Container, ListGroup, Nav, Row } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import "./App.css";
 
 // The Question contains how to display a single question from a QuestionList.
 // While not strictly necessary that this be split out, I find this cleans up
@@ -43,13 +35,13 @@ const QuestionList = (props) => {
   useEffect(() => {
     if (questions.length > 0) return;
     fetch("/round" + round)
-      .then(res => res.json())
-      .then(res => setQuestions(res.questions))
+      .then((res) => res.json())
+      .then((res) => setQuestions(res.questions));
   });
 
   if (params.round !== round) {
-    setQuestions([])
-    setRound(params.round)
+    setQuestions([]);
+    setRound(params.round);
   }
 
   if (!questions) return <div className="loading">Loading...</div>;
@@ -58,16 +50,19 @@ const QuestionList = (props) => {
     <Card bg="light">
       <Card.Header as="h5">Round {round}</Card.Header>
       <ListGroup variant="flush">
-        {
-          questions.map((question) => <Question key={questions.indexOf(question)} number={questions.indexOf(question) + 1} question={question} />)
-        }
+        {questions.map((question) => (
+          <Question
+            key={questions.indexOf(question)}
+            number={questions.indexOf(question) + 1}
+            question={question}
+          />
+        ))}
       </ListGroup>
     </Card>
-  )
+  );
 };
 
 function App() {
-  const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
     <Router>
       <Container>
