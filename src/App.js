@@ -69,6 +69,9 @@ function App() {
         <Row>
           <Col xs={2}>
             <Nav aria-label="Main">
+              <LinkContainer to="/">
+                <Nav.Link as={Link}>Home</Nav.Link>
+              </LinkContainer>
               <LinkContainer to="/round/1">
                 <Nav.Link as={Link}>Round 1</Nav.Link>
               </LinkContainer>
@@ -99,6 +102,7 @@ function App() {
             </Nav>
           </Col>
           <Col xs={10}>
+            <Route exact path="/" />
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
