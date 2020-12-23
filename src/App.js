@@ -62,7 +62,21 @@ const QuestionList = (props) => {
   );
 };
 
+const HomeInfo = (props) => {
+  return <h1>Put HOME info stuff here yo!</h1>;
+};
+
+const RoundLink = (props) => {
+  const { round } = props;
+  return (
+    <LinkContainer to={"/round/" + round}>
+      <Nav.Link as={Link}>Round {round}</Nav.Link>
+    </LinkContainer>
+  );
+};
+
 function App() {
+  const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
     <Router>
       <Container>
@@ -72,37 +86,15 @@ function App() {
               <LinkContainer to="/">
                 <Nav.Link as={Link}>Home</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/round/1">
-                <Nav.Link as={Link}>Round 1</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/2">
-                <Nav.Link as={Link}>Round 2</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/3">
-                <Nav.Link as={Link}>Round 3</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/4">
-                <Nav.Link as={Link}>Round 4</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/5">
-                <Nav.Link as={Link}>Round 5</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/6">
-                <Nav.Link as={Link}>Round 6</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/7">
-                <Nav.Link as={Link}>Round 7</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/8">
-                <Nav.Link as={Link}>Round 8</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/9">
-                <Nav.Link as={Link}>Round 9</Nav.Link>
-              </LinkContainer>
+              {rounds.map((round) => (
+                <RoundLink round={round} />
+              ))}
             </Nav>
           </Col>
           <Col xs={10}>
-            <Route exact path="/" />
+            <Route exact path="/">
+              <HomeInfo />
+            </Route>
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
