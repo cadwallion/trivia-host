@@ -14,6 +14,7 @@ import {
   Nav,
   Row
 } from "react-bootstrap";
+import { LinkContainer } from 'react-router-bootstrap'
 import './App.css';
 
 // The Question contains how to display a single question from a QuestionList.
@@ -36,19 +37,21 @@ const Question = (props) => {
 // to display.
 const QuestionList = (props) => {
   let params = useParams();
-  const [listState, setListState] = useState({
-    round: params.round,
-    questions: null
-  })
+  const [questions, setQuestions] = useState([]);
+  const [round, setRound] = useState(params.round);
 
   useEffect(() => {
-    if (listState.questions) return;
-    fetch("/round" + listState.round)
+    if (questions.length > 0) return;
+    fetch("/round" + round)
       .then(res => res.json())
-      .then(res => setListState({ round: listState.round, questions: res.questions }))
-  }, [listState, setListState]);
+      .then(res => setQuestions(res.questions))
+  });
 
-  const { questions, round } = listState;
+  if (params.round !== round) {
+    setQuestions([])
+    setRound(params.round)
+  }
+
   if (!questions) return <div className="loading">Loading...</div>;
 
   return (
@@ -63,18 +66,7 @@ const QuestionList = (props) => {
   )
 };
 
-const RoundLink = (props) => {
-  let { round } = props;
-
-  return (
-    <li key={round}>
-      <Link to={"/round/" + round}> Round {round}</Link>
-    </li>
-  );
-}
-
 function App() {
-  fetch("/ping").then(res => res.text()).then(res => console.log(res));
   const rounds = Array.from({ length: 9 }, (_, i) => i + 1);
   return (
     <Router>
@@ -82,30 +74,37 @@ function App() {
         <Row>
           <Col xs={2}>
             <Nav aria-label="Main">
-              <Nav.Link href="/round/1">Round 1</Nav.Link>
-              <Nav.Link href="/round/2">Round 2</Nav.Link>
-              <Nav.Link href="/round/3">Round 3</Nav.Link>
-              <Nav.Link href="/round/4">Round 4</Nav.Link>
-              <Nav.Link href="/round/5">Round 5</Nav.Link>
-              <Nav.Link href="/round/6">Round 6</Nav.Link>
-              <Nav.Link href="/round/7">Round 7</Nav.Link>
-              <Nav.Link href="/round/8">Round 8</Nav.Link>
-              <Nav.Link href="/round/9">Round 9</Nav.Link>
+              <LinkContainer to="/round/1">
+                <Nav.Link as={Link}>Round 1</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/2">
+                <Nav.Link as={Link}>Round 2</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/3">
+                <Nav.Link as={Link}>Round 3</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/4">
+                <Nav.Link as={Link}>Round 4</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/5">
+                <Nav.Link as={Link}>Round 5</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/6">
+                <Nav.Link as={Link}>Round 6</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/7">
+                <Nav.Link as={Link}>Round 7</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/8">
+                <Nav.Link as={Link}>Round 8</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/round/9">
+                <Nav.Link as={Link}>Round 9</Nav.Link>
+              </LinkContainer>
             </Nav>
           </Col>
           <Col xs={10}>
-            <Switch>
-              <Route path="/round/:round">
-                <QuestionList />
-              </Route>
-              <Route exact path="/">
-                <nav>
-                  <ul>
-                    {rounds.map((round) => <RoundLink key={round} round={round} />)}
-                  </ul>
-                </nav>
-              </Route>
-            </Switch>
+            <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
       </Container>
