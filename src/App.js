@@ -1,21 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
   Link,
   useParams,
-} from 'react-router-dom';
-import {
-  Card,
-  Col,
-  Container,
-  ListGroup,
-  Nav,
-  Row
-} from "react-bootstrap";
-import { LinkContainer } from 'react-router-bootstrap'
-import './App.css';
+} from "react-router-dom";
+import { Card, Col, Container, ListGroup, Nav, Row } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import "./App.css";
 
 // The Question contains how to display a single question from a QuestionList.
 // While not strictly necessary that this be split out, I find this cleans up
@@ -43,13 +35,13 @@ const QuestionList = (props) => {
   useEffect(() => {
     if (questions.length > 0) return;
     fetch("/round" + round)
-      .then(res => res.json())
-      .then(res => setQuestions(res.questions))
+      .then((res) => res.json())
+      .then((res) => setQuestions(res.questions));
   });
 
   if (params.round !== round) {
-    setQuestions([])
-    setRound(params.round)
+    setQuestions([]);
+    setRound(params.round);
   }
 
   if (!questions) return <div className="loading">Loading...</div>;
@@ -58,12 +50,38 @@ const QuestionList = (props) => {
     <Card bg="light">
       <Card.Header as="h5">Round {round}</Card.Header>
       <ListGroup variant="flush">
-        {
-          questions.map((question) => <Question key={questions.indexOf(question)} number={questions.indexOf(question) + 1} question={question} />)
-        }
+        {questions.map((question) => (
+          <Question
+            key={questions.indexOf(question)}
+            number={questions.indexOf(question) + 1}
+            question={question}
+          />
+        ))}
       </ListGroup>
     </Card>
-  )
+  );
+};
+
+const HomeInfo = (props) => {
+  return (
+    <Card style={{ width: "19rem" }}>
+      <Card.Body>
+        <Card.Title>There is no place like HOME</Card.Title>
+        <Card.Text>Put HOME info stuff here yo!</Card.Text>
+      </Card.Body>
+    </Card>
+  );
+};
+
+const RoundLink = (props) => {
+  const { round } = props;
+  return (
+    <ListGroup.Item variant="info" as="li" action>
+      <LinkContainer to={"/round/" + round}>
+        <Nav.Link as={Link}>Round {round}</Nav.Link>
+      </LinkContainer>
+    </ListGroup.Item>
+  );
 };
 
 function App() {
@@ -74,36 +92,20 @@ function App() {
         <Row>
           <Col xs={2}>
             <Nav aria-label="Main">
-              <LinkContainer to="/round/1">
-                <Nav.Link as={Link}>Round 1</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/2">
-                <Nav.Link as={Link}>Round 2</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/3">
-                <Nav.Link as={Link}>Round 3</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/4">
-                <Nav.Link as={Link}>Round 4</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/5">
-                <Nav.Link as={Link}>Round 5</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/6">
-                <Nav.Link as={Link}>Round 6</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/7">
-                <Nav.Link as={Link}>Round 7</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/8">
-                <Nav.Link as={Link}>Round 8</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/round/9">
-                <Nav.Link as={Link}>Round 9</Nav.Link>
-              </LinkContainer>
+              <ListGroup>
+                <ListGroup.Item variant="primary" as="li" action>
+                  <LinkContainer to="/">
+                    <Nav.Link as={Link}>Home</Nav.Link>
+                  </LinkContainer>
+                </ListGroup.Item>
+                {rounds.map((round) => (
+                  <RoundLink round={round} />
+                ))}
+              </ListGroup>
             </Nav>
           </Col>
           <Col xs={10}>
+            <Route exact path="/" component={HomeInfo} />
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
