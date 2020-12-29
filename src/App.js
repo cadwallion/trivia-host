@@ -105,8 +105,7 @@ function App() {
             </Nav>
           </Col>
           <Col xs={10}>
-            <Route exact path="/">
-              <HomeInfo />
+            <Route exact path="/" component={HomeInfo} />
             </Route>
             <Route path="/round/:round" component={QuestionList} />
           </Col>
