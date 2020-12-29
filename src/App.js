@@ -4,6 +4,7 @@ import {
   Route,
   Link,
   useParams,
+  Redirect,
 } from "react-router-dom";
 import { Card, Col, Container, ListGroup, Nav, Row } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -76,11 +77,9 @@ const HomeInfo = (props) => {
 const RoundLink = (props) => {
   const { round } = props;
   return (
-    <ListGroup.Item variant="info" as="li" action>
-      <LinkContainer to={"/round/" + round}>
-        <Nav.Link as={Link}>Round {round}</Nav.Link>
-      </LinkContainer>
-    </ListGroup.Item>
+    <LinkContainer to={"/round/" + round} as={ListGroup.Item}>
+      <Nav.Link as={Link}>Round {round}</Nav.Link>
+    </LinkContainer>
   );
 };
 
@@ -93,11 +92,9 @@ function App() {
           <Col xs={2}>
             <Nav aria-label="Main">
               <ListGroup>
-                <ListGroup.Item variant="primary" as="li" action>
-                  <LinkContainer to="/home">
-                    <Nav.Link as={Link}>Home</Nav.Link>
-                  </LinkContainer>
-                </ListGroup.Item>
+                <LinkContainer to="/home" as={ListGroup.Item}>
+                  <Nav.Link as={Link}>Home</Nav.Link>
+                </LinkContainer>
                 {rounds.map((round) => (
                   <RoundLink round={round} />
                 ))}
@@ -105,7 +102,7 @@ function App() {
             </Nav>
           </Col>
           <Col xs={10}>
-            <Route exact path="/home" component={HomeInfo} />
+            <Route path="/home" component={HomeInfo} />
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
