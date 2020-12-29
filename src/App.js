@@ -106,7 +106,6 @@ function App() {
           </Col>
           <Col xs={10}>
             <Route exact path="/" component={HomeInfo} />
-            </Route>
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
