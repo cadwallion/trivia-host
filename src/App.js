@@ -94,7 +94,7 @@ function App() {
             <Nav aria-label="Main">
               <ListGroup>
                 <ListGroup.Item variant="primary" as="li" action>
-                  <LinkContainer to="/">
+                  <LinkContainer to="/home">
                     <Nav.Link as={Link}>Home</Nav.Link>
                   </LinkContainer>
                 </ListGroup.Item>
@@ -105,7 +105,7 @@ function App() {
             </Nav>
           </Col>
           <Col xs={10}>
-            <Route exact path="/" component={HomeInfo} />
+            <Route exact path="/home" component={HomeInfo} />
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
