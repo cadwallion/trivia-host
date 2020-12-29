@@ -13,7 +13,7 @@ app.get('/ping', (req, res) => res.send("PONG"));
 app.get('/round:id', (req, res) => {
   db.all("SELECT * FROM questions WHERE round = ?", [req.params.id], (err, rows) => {
     if (err) {
-      res.status(400).message({ "error": err.message });
+      res.status(400).send({ "error": err.message });
       return
     } else {
       res.json({ questions: rows.map((row) => row.question) })
