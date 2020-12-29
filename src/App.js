@@ -4,6 +4,7 @@ import {
   Route,
   Link,
   useParams,
+  Redirect,
 } from "react-router-dom";
 import { Card, Col, Container, ListGroup, Nav, Row } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -94,7 +95,7 @@ function App() {
             <Nav aria-label="Main">
               <ListGroup>
                 <ListGroup.Item variant="primary" as="li" action>
-                  <LinkContainer to="/">
+                  <LinkContainer to="/home">
                     <Nav.Link as={Link}>Home</Nav.Link>
                   </LinkContainer>
                 </ListGroup.Item>
@@ -105,7 +106,10 @@ function App() {
             </Nav>
           </Col>
           <Col xs={10}>
-            <Route exact path="/" component={HomeInfo} />
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route path="/home" component={HomeInfo} />
             <Route path="/round/:round" component={QuestionList} />
           </Col>
         </Row>
