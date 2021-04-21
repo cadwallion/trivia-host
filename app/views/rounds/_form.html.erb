@@ -1,0 +1,26 @@
+<%= form_with(model: [round.game, round]) do |form| %>
+  <%= form.hidden_field :game_id %>
+  <div class="mb-3">
+    <%= form.label :category, class: "form-label" %>
+    <%= form.text_field :category, class: "form-control" %>
+  </div>
+  <h3>Questions</h3>
+
+  <%= form.fields_for :questions, round.questions do |question_form| %>
+    <div class="mb-3">
+      <%= question_form.label :text, "Question Text", class: "form-label"  %>
+      <%= question_form.text_field :text, class: "form-control" %>
+
+      <%= question_form.label :url, "Image or Audio URL", class: "form-label"  %>
+      <%= question_form.text_field :url, class: "form-control" %>
+
+      <%= question_form.label :answer, "Answer", class: "form-label"  %>
+      <%= question_form.text_field :answer, class: "form-control" %>
+
+      <%= question_form.label :position, "Position", class: "form-label"  %>
+      <%= question_form.number_field :position, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <%= form.submit "Submit", class: "btn btn-primary" %>
+<% end %>

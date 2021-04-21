@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  category: MyString
+  position: 1
+  active: false
+  completed: false
+  round_type: MyString
+  game: one
+
+two:
+  category: MyString
+  position: 1
+  active: false
+  completed: false
+  round_type: MyString
+  game: two

@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-12 my-4 d-flex justify-content-start">
+    <div class="col-1">
+      <% if @round_number > 1 %>
+        <%= link_to(content_tag(:span, "", class: "carousel-control-prev-icon").html_safe, game_round_path(@game, @round_number - 1)) %>
+      <% end%>
+    </div>
+    <h1 class="col-10">
+    <% if @round_number == @game.rounds.count %>
+      Final Round - <%= @round.category %>
+    <% else %>
+      Round <%= @round_number %> - <%= @round.category %>
+    <%end %>
+    </h1>
+    <div class="col-1">
+      <% if @round_number < @game.rounds.count %>
+        <%= link_to(content_tag(:span, "", class: "carousel-control-next-icon").html_safe, game_round_path(@game, @round_number + 1)) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% if @round.active %>
+  <div class="row">
+    <% if @round.round_type == "image" %>
+      <% @round.questions.each_with_index do |question, index|%>
+        <div class="col-3">
+          <div class="card text-center" >
+            <%= image_tag question.url, class: "card-img-top" %>
+            <div class="card-footer" class="card-text">Question <%= index+1 %></div>
+          </div>
+        </div>
+      <% end%>
+    <% elsif @round.round_type == "audio" %>
+      <% @round.questions.each_with_index do |question, index| %>
+        <div class="col-3 my-4">
+          <div class="card text-center">
+            <div class="card-header" class="card-text">Question <%= index+1 %></div>
+            <div class="card-body"> <%= audio_tag question.url, class: "card-img-top", controls: true %></div>
+          </div>
+        </div>
+      <% end %>
+    <% elsif @round.round_type == "order" %>
+        <div class="col-12 my-4">
+          <div class="card">
+            <div class="card-header" class="card-text">Final Question</div>
+            <div class="card-body">
+              <h5 class="card-title"><%= @round.questions.first.text %></h5>
+              <div class="card-text">
+                <ol class="px-5">
+                <% @round.questions[1..-1].each do |question| %>
+                  <li class="my-4"><%= question.text %></li>
+                <% end %>
+                <ol>
+              </div>
+            </div>
+          </div>
+        </div>
+    <% else %>
+      <div class="row-12">
+        <% @round.questions.each_with_index do |question, index| %>
+        <div class="card text-white bg-secondary my-4">
+          <div class="card-header">Question <%= index + 1 %></div>
+          <div class="card-body blockquote"><%= question.text %></div>
+        </div>
+        <% end%>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-10 offset-1">
+      <div class="card text-center">
+        <div class="card-header display-3">Wait a Minute, Bub!</div>
+        <div class="card-body lead align-middle" style="min-height: 400px">
+          <div class="mt-5">
+            <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/10/Wolverine-X-of-Swords-header.jpg" height="250" alt="Wolverine blocking your passage" />
+          </div>
+        This Round is not yet active.  No cheating!
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

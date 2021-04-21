@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_21_163441) do
+ActiveRecord::Schema.define(version: 2021_04_21_174315) do
 
   create_table "games", force: :cascade do |t|
     t.string "name"
@@ -19,4 +19,29 @@ ActiveRecord::Schema.define(version: 2021_04_21_163441) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.integer "round_id", null: false
+    t.string "text"
+    t.string "answer"
+    t.string "url"
+    t.integer "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["round_id"], name: "index_questions_on_round_id"
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.string "category"
+    t.integer "position"
+    t.boolean "active", default: false
+    t.boolean "completed", default: false
+    t.string "round_type", default: "question"
+    t.integer "game_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_rounds_on_game_id"
+  end
+
+  add_foreign_key "questions", "rounds"
+  add_foreign_key "rounds", "games"
 end
