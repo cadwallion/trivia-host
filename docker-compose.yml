@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+    app:
+        image: "trivia-host"
+        build: .
+        volumes:
+            - .:/app
+        ports:
+            - 3000:3000
+        depends_on:
+            - webpack
+    webpack:
+        image: "trivia-host"
+        command: ./bin/webpack-dev-server --inline true
+        volumes:
+            - .:/app
+        ports:
+            - '3035:3035'
