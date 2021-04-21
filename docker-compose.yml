@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+    app:
+        image: "trivia-host"
+        build: .
+        volumes:
+            - .:/app
+        ports:
+            - 3000:3000
+        depends_on:
+            - webpack
+    webpack:
+        image: "trivia-host"
+        command: ./bin/webpack-dev-server --inline true
+        volumes:
+            - .:/app
+        ports:
+            - '3035:3035'
+    selenium:
+        image: selenium/hub
+        environment:
+            GRID_MAX_SESSION: 10
+        healthcheck:
+            test: ["CMD", "wget", "--spider", "http://localhost:4444/grid/api/proxy"] 
+            interval: 10s
+            timeout: 5s
+            retries: 3
+    chrome:
+        image: selenium/node-chrome
+        scale: 4
+        depends_on: 
+            - selenium
+        environment:
+            HUB_HOST: selenium
+            NODE_MAX_INSTANCES: 5
+            NODE_MAX_SESSION: 5
+        healthcheck:
+            test: ["CMD", "wget", "--spider", "http://localhost:5555"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+    

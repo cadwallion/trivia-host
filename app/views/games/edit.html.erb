@@ -1,0 +1,10 @@
+<h1>Editing Game</h1>
+
+<%= render 'form', game: @game %>
+
+<% @game.rounds.each do |round| %>
+  <%= render "rounds/form", round: round %>
+<% end %>
+
+<%= link_to 'Show', @game %> |
+<%= link_to 'Back', games_path %>
