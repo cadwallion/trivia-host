@@ -16,3 +16,27 @@ services:
             - .:/app
         ports:
             - '3035:3035'
+    selenium:
+        image: selenium/hub
+        environment:
+            GRID_MAX_SESSION: 10
+        healthcheck:
+            test: ["CMD", "wget", "--spider", "http://localhost:4444/grid/api/proxy"] 
+            interval: 10s
+            timeout: 5s
+            retries: 3
+    chrome:
+        image: selenium/node-chrome
+        scale: 4
+        depends_on: 
+            - selenium
+        environment:
+            HUB_HOST: selenium
+            NODE_MAX_INSTANCES: 5
+            NODE_MAX_SESSION: 5
+        healthcheck:
+            test: ["CMD", "wget", "--spider", "http://localhost:5555"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+    
