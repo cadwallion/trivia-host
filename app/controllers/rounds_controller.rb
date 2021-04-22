@@ -1,23 +1,18 @@
 class RoundsController < ApplicationController
+  before_action :load_game
+  before_action :load_game_round, except: :new
+  
   def new
-    @game = Game.find_by(id: params[:game_id])
     @round = @game.new_round(category: "")
   end
 
   def show
-    @game = Game.find_by(params[:game_id])
-    @round_number = params[:id].to_i
-    @round = @game.rounds.find_by(position: @round_number - 1)
   end
 
   def answers
-    @game = Game.find_by(params[:game_id])
-    @round_number = params[:id].to_i
-    @round = @game.rounds.find_by(position: @round_number - 1)
   end
 
   def create
-    @game = Game.find_by(id: params[:game_id])
     @round = @game.rounds.build(round_params)
     if @round.save
       respond_to do |format|
@@ -31,8 +26,6 @@ class RoundsController < ApplicationController
   end
 
   def update
-    @round = Round.find_by(id: params[:id])
-
     if @round.update(round_params)
       format.html { redirect_to @round.game }
       format.json { render json: { message: "Saved" } }
@@ -42,9 +35,6 @@ class RoundsController < ApplicationController
   end
 
   def activate
-    @game = Game.find_by(params[:game_id])
-    @round_number = params[:id].to_i
-    @round = @game.rounds.find_by(position: @round_number - 1)
     if @round.valid?
       if @round.active == false
         @round.update(active: true)
@@ -58,9 +48,6 @@ class RoundsController < ApplicationController
   end
 
   def deactivate
-    @game = Game.find_by(params[:game_id])
-    @round_number = params[:id].to_i
-    @round = @game.rounds.find_by(position: @round_number - 1)
     if @round.valid?
       if @round.active == true
         @round.update(active: false)
@@ -74,9 +61,6 @@ class RoundsController < ApplicationController
   end
 
   def complete
-    @game = Game.find_by(params[:game_id])
-    @round_number = params[:id].to_i
-    @round = @game.rounds.find_by(position: @round_number - 1)
     if @round.valid?
       if @round.completed == false
         @round.update(completed: true)
@@ -90,9 +74,6 @@ class RoundsController < ApplicationController
   end
 
   def continue
-    @game = Game.find_by(params[:game_id])
-    @round_number = params[:id].to_i
-    @round = @game.rounds.find_by(position: @round_number - 1)
     if @round.valid?
       if @round.completed == true
         @round.update(completed: false)
@@ -109,5 +90,14 @@ class RoundsController < ApplicationController
 
   def round_params
     params.require(:round).permit(:position, :category, :game_id, questions_attributes: [:text, :url, :answer, :position])
+  end
+
+  def load_game
+    @game = Game.find_by(params[:game_id])
+  end
+  
+  def load_game_round
+    @round_number = params[:id].to_i
+    @round = @game.rounds.by_round(@round_number).first
   end
 end
