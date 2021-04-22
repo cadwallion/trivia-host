@@ -21,11 +21,11 @@ class RoundsController < ApplicationController
     @round = @game.rounds.build(round_params)
 
     if @round.save
-      format.html { redirect_to "/games/#{@game.id}/rounds/new" }
-      format.json { render json: { message: "Saved" } }
+      redirect_to "/games/#{@game.id}/rounds/new"
+      # format.json { render json: { message: "Saved" } }
     else
-      format.html { render "new" }
-      format.json { render json: { error: @round.errors } }
+      render "new"
+      # format.json { render json: { error: @round.errors } }
     end
   end
 
@@ -33,11 +33,51 @@ class RoundsController < ApplicationController
     @round = Round.find_by(id: params[:id])
 
     if @round.update(round_params)
-      format.html { redirect_to @round.game }
-      format.json { render json: { message: "Saved" } }
+      redirect_to @round.game
+      # format.json { render json: { message: "Saved" } }
     else
       format.json { render json: { error: @round.errors } }
     end
+  end
+
+  def activate
+    @game = Game.find_by(id: params[:id])
+    @round = Round.find_by(id: params[:id])
+    notice = "Round #{@round.category} "
+    if  @round.active != true
+      @round.update(active: true)
+      notice.concat("actived")
+    else
+      notice.concat("is already actived")
+    end
+    redirect_to @game, notice: notice
+  end
+
+  def deactivate
+    @game = Game.find_by(id: params[:id])
+    @round = Round.find_by(id: params[:id])
+    notice = "Round #{@round.category} "
+    if  @round.active != false
+      @round.update(active: false)
+      notice.concat("deactived")
+    else
+      notice.concat("is already deactived")
+    end
+    redirect_to @game, notice: notice
+  end
+
+  def complete
+    @game = Game.find_by(id: params[:id])
+    @round = Round.find_by(id: params[:id])
+    @round.update(completed: true)
+    redirect_to @game, notice: "Round #{@round.category} completed!"
+  end
+
+  def continue
+    @game = Game.find_by(id: params[:id])
+    @round = Round.find_by(id: params[:id])
+    @round.update(completed: false)
+    redirect_to @game, notice: "Round #{@round.category} continuing..."
   end
 
   private
