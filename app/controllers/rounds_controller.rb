@@ -17,12 +17,13 @@ class RoundsController < ApplicationController
   end
 
   def create
-    @game = Game.find_by(params[:game_id])
+    @game = Game.find_by(id: params[:game_id])
     @round = @game.rounds.build(round_params)
-
     if @round.save
-      format.html { redirect_to "/games/#{@game.id}/rounds/new" }
-      format.json { render json: { message: "Saved" } }
+      respond_to do |format|
+        format.html { redirect_to(new_game_round_path(@game)) }
+        format.json { render json: { message: "Saved" } }
+      end
     else
       format.html { render "new" }
       format.json { render json: { error: @round.errors } }
@@ -44,7 +45,7 @@ class RoundsController < ApplicationController
     @game = Game.find_by(params[:game_id])
     @round_number = params[:id].to_i
     @round = @game.rounds.find_by(position: @round_number - 1)
-    if @game.valid? && @round.valid?
+    if @round.valid?
       if @round.active == false
         @round.update(active: true)
         redirect_to @game, notice: "Round #{@round.category} actived"
@@ -60,7 +61,7 @@ class RoundsController < ApplicationController
     @game = Game.find_by(params[:game_id])
     @round_number = params[:id].to_i
     @round = @game.rounds.find_by(position: @round_number - 1)
-    if @game.valid? && @round.valid?
+    if @round.valid?
       if @round.active == true
         @round.update(active: false)
         redirect_to @game, notice: "Round #{@round.category} deactivated"
@@ -76,7 +77,7 @@ class RoundsController < ApplicationController
     @game = Game.find_by(params[:game_id])
     @round_number = params[:id].to_i
     @round = @game.rounds.find_by(position: @round_number - 1)
-    if @game.valid? && @round.valid?
+    if @round.valid?
       if @round.completed == false
         @round.update(completed: true)
         redirect_to @game, notice: "Round #{@round.category} completed"
@@ -92,7 +93,7 @@ class RoundsController < ApplicationController
     @game = Game.find_by(params[:game_id])
     @round_number = params[:id].to_i
     @round = @game.rounds.find_by(position: @round_number - 1)
-    if @game.valid? && @round.valid?
+    if @round.valid?
       if @round.completed == true
         @round.update(completed: false)
         redirect_to @game, notice: "Round #{@round.category} continuing"
@@ -107,6 +108,6 @@ class RoundsController < ApplicationController
   private
 
   def round_params
-    params.require(:round).permit(:category, :game_id, questions_attributes: [:text, :url, :answer, :position])
+    params.require(:round).permit(:position, :category, :game_id, questions_attributes: [:text, :url, :answer, :position])
   end
 end
