@@ -21,11 +21,11 @@ class RoundsController < ApplicationController
     @round = @game.rounds.build(round_params)
 
     if @round.save
-      redirect_to "/games/#{@game.id}/rounds/new"
-      # format.json { render json: { message: "Saved" } }
+      format.html { redirect_to "/games/#{@game.id}/rounds/new" }
+      format.json { render json: { message: "Saved" } }
     else
-      render "new"
-      # format.json { render json: { error: @round.errors } }
+      format.html { render "new" }
+      format.json { render json: { error: @round.errors } }
     end
   end
 
@@ -33,8 +33,8 @@ class RoundsController < ApplicationController
     @round = Round.find_by(id: params[:id])
 
     if @round.update(round_params)
-      redirect_to @round.game
-      # format.json { render json: { message: "Saved" } }
+      format.html { redirect_to @round.game }
+      format.json { render json: { message: "Saved" } }
     else
       format.json { render json: { error: @round.errors } }
     end
