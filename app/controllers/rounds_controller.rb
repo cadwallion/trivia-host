@@ -41,45 +41,69 @@ class RoundsController < ApplicationController
   end
 
   def activate
-    @game = Game.find_by(id: params[:id])
-    @round = Round.find_by(id: params[:id])
-    notice = "Round #{@round.category} "
-    if  @round.active != true
-      @round.update(active: true)
-      notice.concat("actived")
+    @game = Game.find_by(params[:game_id])
+    @round_number = params[:id].to_i
+    @round = @game.rounds.find_by(position: @round_number - 1)
+    if @game.valid? && @round.valid?
+      if @round.active == false
+        @round.update(active: true)
+        redirect_to @game, notice: "Round #{@round.category} actived"
+      else
+        redirect_to @game, notice: "Round #{@round.category} is already active"
+      end
     else
-      notice.concat("is already actived")
+      redirect_to @game, notice: "Game or round not found..."
     end
-    redirect_to @game, notice: notice
   end
 
   def deactivate
-    @game = Game.find_by(id: params[:id])
-    @round = Round.find_by(id: params[:id])
-    notice = "Round #{@round.category} "
-    if  @round.active != false
-      @round.update(active: false)
-      notice.concat("deactived")
+    @game = Game.find_by(params[:game_id])
+    @round_number = params[:id].to_i
+    @round = @game.rounds.find_by(position: @round_number - 1)
+    if @game.valid? && @round.valid?
+      if @round.active == true
+        @round.update(active: false)
+        redirect_to @game, notice: "Round #{@round.category} deactivated"
+      else
+        redirect_to @game, notice: "Round #{@round.category} has already been deactivated"
+      end
     else
-      notice.concat("is already deactived")
+      redirect_to @game, notice: "Game or round not found..."
     end
-    redirect_to @game, notice: notice
   end
 
   def complete
-    @game = Game.find_by(id: params[:id])
-    @round = Round.find_by(id: params[:id])
-    @round.update(completed: true)
-    redirect_to @game, notice: "Round #{@round.category} completed!"
+    @game = Game.find_by(params[:game_id])
+    @round_number = params[:id].to_i
+    @round = @game.rounds.find_by(position: @round_number - 1)
+    if @game.valid? && @round.valid?
+      if @round.completed == false
+        @round.update(completed: true)
+        redirect_to @game, notice: "Round #{@round.category} completed"
+      else
+        redirect_to @game, notice: "Round #{@round.category} has already been set to complete"
+      end
+    else
+      redirect_to @game, notice: "Game or round not found..."
+    end
   end
 
   def continue
-    @game = Game.find_by(id: params[:id])
-    @round = Round.find_by(id: params[:id])
-    @round.update(completed: false)
-    redirect_to @game, notice: "Round #{@round.category} continuing..."
+    @game = Game.find_by(params[:game_id])
+    @round_number = params[:id].to_i
+    @round = @game.rounds.find_by(position: @round_number - 1)
+    if @game.valid? && @round.valid?
+      if @round.completed == true
+        @round.update(completed: false)
+        redirect_to @game, notice: "Round #{@round.category} continuing"
+      else
+        redirect_to @game, notice: "Round #{@round.category} has already been set to continue"
+      end
+    else
+      redirect_to @game, notice: "Game or round not found..."
+    end
   end
-
+  
   private
 
   def round_params
