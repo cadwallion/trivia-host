@@ -54,7 +54,7 @@ class RoundsController < ApplicationController
   end
 
   def deactivate
-    @game = Game.find_by(id: params[:id])
+    @game = Game.find_by(id: params[:game_id])
     @round = Round.find_by(id: params[:id])
     notice = "Round #{@round.category} "
     if  @round.active != false
