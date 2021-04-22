@@ -48,7 +48,7 @@ class RoundsController < ApplicationController
       @round.update(active: true)
       notice.concat("activated")
     else
-      notice.concat("is already actived")
+      notice.concat("is already activated")
     end
     redirect_to @game, notice: notice
   end
