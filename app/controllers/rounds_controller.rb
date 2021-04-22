@@ -59,7 +59,7 @@ class RoundsController < ApplicationController
     notice = "Round #{@round.category} "
     if  @round.active != false
       @round.update(active: false)
-      notice.concat("deactived")
+      notice.concat("deactivated")
     else
       notice.concat("is already deactived")
     end
