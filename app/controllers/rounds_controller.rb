@@ -62,7 +62,7 @@ class RoundsController < ApplicationController
 
   def complete
     if @round.valid?
-      if @round.completed == false
+      if !@round.completed
         @round.update(completed: true)
         redirect_to @game, notice: "Round #{@round.category} completed"
       else
