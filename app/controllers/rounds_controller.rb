@@ -36,7 +36,7 @@ class RoundsController < ApplicationController
 
   def activate
     if @round.valid?
-      if @round.active == false
+      if !@round.active
         @round.update(active: true)
         redirect_to @game, notice: "Round #{@round.category} actived"
       else
