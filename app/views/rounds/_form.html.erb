@@ -1,5 +1,6 @@
 <%= form_with(model: [round.game, round]) do |form| %>
   <%= form.hidden_field :game_id %>
+  <%= form.hidden_field :position %>
   <div class="mb-3">
     <%= form.label :category, class: "form-label" %>
     <%= form.text_field :category, class: "form-control" %>

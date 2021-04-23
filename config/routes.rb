@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :games do
     resources :rounds do
+      post :activate, on: :member
+      post :deactivate, on: :member
+      post :complete, on: :member
+      post :continue, on: :member
       get "answers", on: :member
     end
   end

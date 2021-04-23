@@ -12,3 +12,19 @@
 
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>
+
+<p>
+  <% @game.rounds.each do |round| %>
+    <p><%= round.category %></p>
+    <% if !round.active %>
+      <p><%= button_to "Activate", activate_game_round_path(@game, round.round_number) %></p>
+    <% else %>
+      <p><%= button_to "Deactivate", deactivate_game_round_path(@game, round.round_number) %></p>
+    <% end %>
+    <% if !round.completed %>
+      <p><%= button_to "Complete", complete_game_round_path(@game, round.round_number) %></p>
+    <% else %>
+      <p><%= button_to "Continue", continue_game_round_path(@game, round.round_number) %></p>
+    <% end %>
+  <% end %>
+</p>

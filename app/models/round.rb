@@ -4,4 +4,8 @@ class Round < ApplicationRecord
   accepts_nested_attributes_for :questions
 
   validates :category, presence: true
+
+  def round_number
+    position + 1
+  end
 end

@@ -16,9 +16,9 @@
       <tr>
         <td><%= game.name %></td>
         <td><%= game.played_at %></td>
-        <td><%= link_to 'Show', game %></td>
-        <td><%= link_to 'Edit', edit_game_path(game) %></td>
-        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Show', game, method: :get %></td>
+        <td><%= button_to 'Edit', edit_game_path(game), method: :get %></td>
+        <td><%= button_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
