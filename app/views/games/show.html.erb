@@ -21,7 +21,7 @@
     <% else %>
       <p><%= button_to "Deactivate", deactivate_game_round_path(@game, round.round_number) %></p>
     <% end %>
-    <% if round.completed == false %>
+    <% if !round.completed %>
       <p><%= button_to "Complete", complete_game_round_path(@game, round.round_number) %></p>
     <% else %>
       <p><%= button_to "Continue", continue_game_round_path(@game, round.round_number) %></p>
