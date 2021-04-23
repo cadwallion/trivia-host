@@ -49,7 +49,7 @@ class RoundsController < ApplicationController
 
   def deactivate
     if @round.valid?
-      if @round.active == true
+      if @round.active
         @round.update(active: false)
         redirect_to @game, notice: "Round #{@round.category} deactivated"
       else
