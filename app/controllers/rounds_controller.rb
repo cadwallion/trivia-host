@@ -93,7 +93,7 @@ class RoundsController < ApplicationController
   end
 
   def load_game
-    @game = Game.find_by(params[:game_id])
+    @game = Game.find_by(id: params[:game_id])
   end
   
   def load_game_round
