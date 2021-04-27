@@ -15,27 +15,6 @@ class TriviaImporter
     end
   end
 
-  def parse_page_old page
-    match = page.text.match(/^\s+(?<round>.+)\n{2,}\s+(?<category>.+)\n{2,}(?<questions>.*)/m)
-    category = match["category"].strip
-    data = match["questions"].split(/\n{2,4}/)
-
-    data.map do |item| 
-      if match = item.strip.gsub("\n      ", " ").gsub("\n", "").match(QUESTION_PATTERN)
-        { 
-          category: category,
-          question: match.named_captures["question"].strip + "?",
-          answer: match.named_captures["answer"].strip,
-        }
-      else
-        {
-          category: category,
-          data: data,
-        } 
-      end
-    end
-  end
-
   def parse_page page
     data = page.text.split(/\d+\./)
     category = data.shift
