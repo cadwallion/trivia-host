@@ -1,5 +1,7 @@
+require "stringio"
+
 class TriviaImporter
-  attr_reader :reader, :pages
+  attr_reader :reader, :pages, :game
 
   QUESTION_PATTERN = /\d{1,}\.\s+(?<question>.+)\?(?<answer>.+)/
 
@@ -7,9 +9,47 @@ class TriviaImporter
   def initialize file
     @file = file
     @reader = PDF::Reader.new(@file)
+    @game = Game.new(name: "#{Time.now.to_i}")
   end
 
   def import
+    parse 
+    add_rounds
+  end
+
+  def add_rounds
+    pages.each do |page|
+      round = game.new_round(category: page[:category], question_count: 0)
+
+      case page[:category]
+      when "Picture Round"
+        round.round_type = "image"
+      when "Audio Round"
+        round.round_type = "audio"
+      end
+
+      page[:questions].each_index do |index|
+        raw_question = page[:questions][index]
+        question = round.questions.build({
+          position: index,
+          answer: raw_question[:answer]
+        })
+
+        case page[:category]
+        when "Picture Round"
+          io = StringIO.new(raw_question[:question])
+          question.picture.attach(io: io, filename: "#{index}.jpg")
+          question.text = "Picture"
+        when "Audio Round"
+          question.url = raw_question[:question]
+        else
+          question.text = raw_question[:question]
+        end
+      end
+    end
+  end
+
+  def parse
     @pages = @reader.pages[1..-1].map do |page|
       parse_page(page)
     end
@@ -28,7 +68,7 @@ class TriviaImporter
       data.unshift(match["question"])
       { category: match["category"].chomp, questions: parse_final_round(data) }
     else
-      { category: category, questions: parse_question_round(data) }
+      { category: category.chomp.strip.split("\n").last.strip, questions: parse_question_round(data) }
     end
   end
   
@@ -62,8 +102,12 @@ class TriviaImporter
     question_url_fragment = data.last.match(/https:\/\/quiznight.vids.io\/videos\/(.*)/)[1]
     question_url = "https://quiznight.vids.io/videos/#{question_url_fragment}"
     data.map do |answer|
-      match = answer.match(/“(?<title>.*)” – (?<artist>.+)/)
-      formatted_answer = "\"#{match["title"]}\" - #{match["artist"]}"
+      match = answer.match(/“(?<title>.*)” .{1} (?<artist>.+)/)
+      if match
+        formatted_answer = "\"#{match["title"]}\" - #{match["artist"]}"
+      else
+        formatted_answer = answer.split("\n").first
+      end
       {
         question: question_url,
         answer: formatted_answer
