@@ -4,6 +4,8 @@ class Question < ApplicationRecord
   validates :answer, presence: true
   validates :position, presence: true
 
+  has_one_attached :picture
+
   validate :text_or_url
 
   def text_or_url
