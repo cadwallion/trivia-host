@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
-load File.expand_path("spring", __dir__)
-require_relative "../config/boot"
-require "rake"
-Rake.application.run
+
+if File.exist? "/etc/app-env"
+  load File.expand_path("spring", __dir__)
+  require_relative "../config/boot"
+  require "rake"
+  Rake.application.run
+else
+  exec "docker-compose exec app rails #{ARGV.join(" ")}"
+end
