@@ -5,7 +5,6 @@ class TriviaImporter
 
   QUESTION_PATTERN = /\d{1,}\.\s+(?<question>.+)\?(?<answer>.+)/
 
-
   def initialize file
     @file = file
     @reader = PDF::Reader.new(@file)
@@ -124,6 +123,6 @@ class TriviaImporter
         answer:  data[index+question_count].gsub("\n", "").strip
       }
     end
-    [{question: question, answer: "lolgetrekt" }] + options
+    [{question: question, answer: "Unknown" }] + options
   end
 end
