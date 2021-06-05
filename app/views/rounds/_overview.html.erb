@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col-11">
+    <h3>Round <%= round.position + 1 %> - <%= round.category %></h3>
+  </div>
+  <div class="col-1">
+    <%= link_to "Edit", edit_game_round_path(round.game, round) %>
+  </div>
+</div>

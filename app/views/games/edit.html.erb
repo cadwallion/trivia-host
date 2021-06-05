@@ -1,9 +1,29 @@
-<h1>Editing Game</h1>
+<div class="row">
+  <div class="col">
+    <h1>Editing Game</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <%= render 'form', game: @game %>
+  </div>
+</div>
 
-<%= render 'form', game: @game %>
-
-<% @game.rounds.each do |round| %>
-  <%= render "rounds/form", round: round %>
+<div class="row">
+  <div class="col">
+    <h3>Game Rounds</h3>
+  </div>
+</div>
+<% if @game.rounds.any?%>
+  <% @game.rounds.each do |round| %>
+    <%= render "rounds/overview", round: round %>
+  <% end %>
+<% else %>
+  <div class="row">
+    <div class="col">
+      No categories added yet.  <%= link_to "Add a category", new_game_round_path(@game) %>
+    </div>
+  </div>
 <% end %>
 
 <%= link_to 'Show', @game %> |

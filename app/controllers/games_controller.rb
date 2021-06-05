@@ -17,7 +17,7 @@ class GamesController < ApplicationController
 
   # GET /games/1/edit
   def edit
-    @game.new_round(category: "")
+    #@game.new_round(category: "")
   end
 
   # POST /games or /games.json
