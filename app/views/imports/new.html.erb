@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-12">
+        <h3>Import Trivia Questions</h3>
+    </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <%= form_for @importer, url: game_imports_path(@game), multipart: true do |f| %>
+      <%= f.label :file, "Trivia PDF" %>
+      <%= f.file_field :file, accept: "application/pdf" %>
+      <%= f.submit "Import"%>
+    <% end %>
+  </div>
+</div>

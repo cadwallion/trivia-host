@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :games do
+    resource :imports
     resources :rounds do
       post :activate, on: :member
       post :deactivate, on: :member

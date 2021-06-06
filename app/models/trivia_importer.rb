@@ -1,14 +1,14 @@
 require "stringio"
 
 class TriviaImporter
-  attr_reader :reader, :pages, :game
+  include ActiveModel::Model
+  attr_reader :reader, :pages
+  attr_accessor :game, :file
 
   QUESTION_PATTERN = /\d{1,}\.\s+(?<question>.+)\?(?<answer>.+)/
 
-  def initialize file
-    @file = file
-    @reader = PDF::Reader.new(@file)
-    @game = Game.new(name: "#{Time.now.to_i}")
+  def reader
+    @reader ||= PDF::Reader.new(@file)
   end
 
   def import
@@ -49,7 +49,7 @@ class TriviaImporter
   end
 
   def parse
-    @pages = @reader.pages[1..-1].map do |page|
+    @pages = reader.pages[1..-1].map do |page|
       parse_page(page)
     end
   end
