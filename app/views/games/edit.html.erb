@@ -21,7 +21,7 @@
 <% else %>
   <div class="row">
     <div class="col">
-      No categories added yet.  <%= link_to "Add a category", new_game_round_path(@game) %>
+      No categories added yet.  <%= link_to "Add a category", new_game_round_path(@game) %> or <%= link_to "Import a PDF", new_game_imports_path(@game) %>.
     </div>
   </div>
 <% end %>

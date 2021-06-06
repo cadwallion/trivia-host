@@ -9,6 +9,9 @@ class RoundsController < ApplicationController
   def show
   end
 
+  def edit
+  end
+
   def answers
   end
 

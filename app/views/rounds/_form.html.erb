@@ -5,6 +5,10 @@
     <%= form.label :category, class: "form-label" %>
     <%= form.text_field :category, class: "form-control" %>
   </div>
+  <div class="">
+    <%= form.label :round_type, "Round Type", class: "form-label" %>
+    <%= form.select :round_type, [["Question Round", "question"], ["Audio Round", "audio"], ["Picture Round", "image"], ["Final Round", "order"]]%>
+  </div>
   <h3>Questions</h3>
 
   <%= form.fields_for :questions, round.questions do |question_form| %>
