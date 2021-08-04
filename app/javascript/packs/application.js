@@ -7,8 +7,24 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import "@popperjs/core"
 import "bootstrap"
 
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+(function($) {
+	$(".sortable").sortable({
+		containerSelector: "ul.sortable",
+		itemSelector: "li.sort",
+		handle: ".handle",
+		placeholder:
+			'<li><div class="card bg-primary text-white mb-1"><div class="card-header">Drop Here</div></div></li>',
+		distance: 0,
+		onDrop: function($item) {
+			$item.attr("style", null).removeClass("dragged");
+			$("body").removeClass("dragging");
+		}
+	});
+})(jQuery);

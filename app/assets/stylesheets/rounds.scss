@@ -1,3 +1,15 @@
 // Place all the styles related to the rounds controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+body.dragging,
+body.dragging * {
+	cursor: grabbing !important;
+}
+.dragged {
+	position: absolute !important;
+	opacity: 0.6;
+	z-index: 2000;
+}
+.handle {
+	cursor: grab;
+}
