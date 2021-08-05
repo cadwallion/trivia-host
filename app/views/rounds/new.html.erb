@@ -1,3 +1,6 @@
 <h1>Game <%= @game.name %> | New Round</h1>
 
+<% unless  @round.errors.empty? %>
+  <div><%= @round.errors.full_messages.join(", ") %></div>
+<% end %>
 <%= render "form", round: @round %>
