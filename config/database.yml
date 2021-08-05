@@ -5,13 +5,17 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: trivia_host_development
+  username: postgres
+  password: LOLPASSWORD
+  host: db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -22,4 +26,6 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: trivia_host_production
+  username: trivia_host
+  password: <%= ENV['TRIVIA_HOST_DATABASE_PASSWORD'] %>

@@ -16,6 +16,12 @@ services:
             - .:/app
         ports:
             - '3035:3035'
+    db:
+        image: postgres
+        volumes:
+            - ./tmp/db:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: LOLPASSWORD
     selenium:
         image: selenium/hub
         environment:
