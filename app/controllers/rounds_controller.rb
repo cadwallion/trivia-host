@@ -23,17 +23,23 @@ class RoundsController < ApplicationController
         format.json { render json: { message: "Saved" } }
       end
     else
-      format.html { render "new" }
-      format.json { render json: { error: @round.errors } }
+      respond_to do |format|
+        format.html { render "new" }
+        format.json { render json: { error: @round.errors } }
+      end
     end
   end
 
   def update
     if @round.update(round_params)
-      format.html { redirect_to @round.game }
-      format.json { render json: { message: "Saved" } }
+      respond_to do |format|
+        format.html { redirect_to @round.game }
+        format.json { render json: { message: "Saved" } }
+      end
     else
-      format.json { render json: { error: @round.errors } }
+      respond_to do |format|
+        format.json { render json: { error: @round.errors } }
+      end
     end
   end
 
