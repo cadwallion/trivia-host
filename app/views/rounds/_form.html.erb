@@ -24,6 +24,7 @@
                  <i class="fas fa-bars handle"></i> 
                 </div>
                 <div class="col-sm-11">
+                  <%= question_form.hidden_field :position %>
                   <%= render "#{round.round_type}_fields", form: question_form %>
                 </div>
               </div>
