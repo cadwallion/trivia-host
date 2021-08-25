@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Starting db"
+docker-compose up -d db
+
+echo "Waiting for db to be ready"
+counter=0
+until docker-compose exec db pg_isready; do
+  counter+=1
+  if [ $counter -eq 12 ]; then
+    echo "Timed out waiting for db to be ready!"
+    exit 1
+  fi
+  sleep 5
+done
+
+echo "Starting up webpack and webapp"
+docker-compose up app webpack

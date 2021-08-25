@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Starting db"
+docker-compose up db
+
+echo "Waiting for db to be ready"
+timeout 90s bash -c "until docker-compose exec db pg_isready ; do sleep 5 ; done"
+
+echo "Starting up webpack and webapp"
+docker-compose up app webpack
+
+echo "Running tests"
+docker-compose exec app bin/rails test
