@@ -25,7 +25,9 @@
       <% @round.questions.each_with_index do |question, index|%>
         <div class="col-3">
           <div class="card text-center" >
+          <% if question.picture %>
             <%= image_tag url_for(question.picture), class: "card-img-top" %>
+          <% end %>
             <div class="card-footer" class="card-text">Question <%= index+1 %></div>
           </div>
         </div>
